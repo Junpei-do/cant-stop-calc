@@ -1,191 +1,33 @@
 import React, { useState } from 'react';
+import { probabilityData } from './data/probabilityData'; 
 
 const ProbabilityCalculator = () => {
-  // 完全なデータセット
-  const probabilityData = [
-    {route1: 2, route2: 3, route3: 4, probability: 47.84},
-    {route1: 2, route2: 3, route3: 9, probability: 28.78},
-    {route1: 2, route2: 4, route3: 6, probability: 24.15},
-    {route1: 2, route2: 4, route3: 11, probability: 36.57},
-    {route1: 2, route2: 5, route3: 9, probability: 24},
-    {route1: 2, route2: 6, route3: 8, probability: 11.65},
-    {route1: 2, route2: 7, route3: 8, probability: 10.96},
-    {route1: 2, route2: 8, route3: 9, probability: 17.75},
-    {route1: 2, route2: 9, route3: 11, probability: 36.34},
-    {route1: 3, route2: 4, route3: 5, probability: 33.1},
-    {route1: 3, route2: 4, route3: 10, probability: 24.38},
-    {route1: 3, route2: 5, route3: 8, probability: 19.21},
-    {route1: 3, route2: 6, route3: 7, probability: 13.5},
-    {route1: 3, route2: 6, route3: 12, probability: 26.39},
-    {route1: 3, route2: 7, route3: 12, probability: 22.15},
-    {route1: 3, route2: 9, route3: 10, probability: 22.15},
-    {route1: 3, route2: 11, route3: 12, probability: 47.45},
-    {route1: 4, route2: 5, route3: 10, probability: 17.75},
-    {route1: 4, route2: 6, route3: 9, probability: 13.58},
-    {route1: 4, route2: 7, route3: 9, probability: 10.73},
-    {route1: 4, route2: 8, route3: 10, probability: 11.65},
-    {route1: 4, route2: 9, route3: 12, probability: 24.38},
-    {route1: 5, route2: 6, route3: 8, probability: 10.49},
-    {route1: 5, route2: 7, route3: 8, probability: 8.56},
-    {route1: 5, route2: 8, route3: 9, probability: 13.35},
-    {route1: 5, route2: 9, route3: 11, probability: 22.38},
-    {route1: 6, route2: 7, route3: 8, probability: 8.02},
-    {route1: 6, route2: 8, route3: 9, probability: 10.49},
-    {route1: 6, route2: 9, route3: 11, probability: 19.21},
-    {route1: 7, route2: 8, route3: 9, probability: 11.34},
-    {route1: 7, route2: 9, route3: 11, probability: 21.3},
-    {route1: 8, route2: 9, route3: 10, probability: 20.37},
-    {route1: 8, route2: 11, route3: 12, probability: 31.64},
-    {route1: 2, route2: 3, route3: 5, probability: 41.59},
-    {route1: 2, route2: 3, route3: 10, probability: 36.57},
-    {route1: 2, route2: 4, route3: 7, probability: 19.29},
-    {route1: 2, route2: 4, route3: 12, probability: 44.83},
-    {route1: 2, route2: 5, route3: 10, probability: 24.38},
-    {route1: 2, route2: 6, route3: 9, probability: 16.67},
-    {route1: 2, route2: 7, route3: 9, probability: 16.44},
-    {route1: 2, route2: 8, route3: 10, probability: 18.44},
-    {route1: 2, route2: 9, route3: 12, probability: 36.57},
-    {route1: 3, route2: 4, route3: 6, probability: 25.77},
-    {route1: 3, route2: 4, route3: 11, probability: 34.34},
-    {route1: 3, route2: 5, route3: 9, probability: 22.38},
-    {route1: 3, route2: 6, route3: 8, probability: 14.66},
-    {route1: 3, route2: 7, route3: 8, probability: 10.73},
-    {route1: 3, route2: 8, route3: 9, probability: 16.44},
-    {route1: 3, route2: 9, route3: 11, probability: 29.01},
-    {route1: 4, route2: 5, route3: 6, probability: 20.37},
-    {route1: 4, route2: 5, route3: 11, probability: 22.15},
-    {route1: 4, route2: 6, route3: 10, probability: 11.65},
-    {route1: 4, route2: 7, route3: 10, probability: 12.35},
-    {route1: 4, route2: 8, route3: 11, probability: 17.75},
-    {route1: 4, route2: 10, route3: 11, probability: 24.38},
-    {route1: 5, route2: 6, route3: 9, probability: 13.35},
-    {route1: 5, route2: 7, route3: 9, probability: 14.66},
-    {route1: 5, route2: 8, route3: 10, probability: 13.58},
-    {route1: 5, route2: 9, route3: 12, probability: 24},
-    {route1: 6, route2: 7, route3: 9, probability: 8.56},
-    {route1: 6, route2: 8, route3: 10, probability: 8.87},
-    {route1: 6, route2: 9, route3: 12, probability: 17.13},
-    {route1: 7, route2: 8, route3: 10, probability: 11.42},
-    {route1: 7, route2: 9, route3: 12, probability: 19.06},
-    {route1: 8, route2: 9, route3: 11, probability: 22.92},
-    {route1: 9, route2: 10, route3: 11, probability: 33.19},
-    {route1: 2, route2: 3, route3: 6, probability: 31.64},
-    {route1: 2, route2: 3, route3: 11, probability: 47.45},
-    {route1: 2, route2: 4, route3: 8, probability: 18.44},
-    {route1: 2, route2: 5, route3: 6, probability: 22.99},
-    {route1: 2, route2: 5, route3: 11, probability: 28.78},
-    {route1: 2, route2: 6, route3: 10, probability: 18.9},
-    {route1: 2, route2: 7, route3: 10, probability: 16.67},
-    {route1: 2, route2: 8, route3: 11, probability: 26.39},
-    {route1: 2, route2: 10, route3: 11, probability: 42.13},
-    {route1: 3, route2: 4, route3: 7, probability: 20.91},
-    {route1: 3, route2: 4, route3: 12, probability: 42.13},
-    {route1: 3, route2: 5, route3: 10, probability: 24.15},
-    {route1: 3, route2: 6, route3: 9, probability: 17.36},
-    {route1: 3, route2: 7, route3: 9, probability: 15.74},
-    {route1: 3, route2: 8, route3: 10, probability: 16.67},
-    {route1: 3, route2: 9, route3: 12, probability: 28.78},
-    {route1: 4, route2: 5, route3: 7, probability: 15.2},
-    {route1: 4, route2: 5, route3: 12, probability: 29.01},
-    {route1: 4, route2: 6, route3: 11, probability: 16.67},
-    {route1: 4, route2: 7, route3: 11, probability: 16.44},
-    {route1: 4, route2: 8, route3: 12, probability: 18.9},
-    {route1: 4, route2: 10, route3: 12, probability: 26.16},
-    {route1: 5, route2: 6, route3: 10, probability: 13.73},
-    {route1: 5, route2: 7, route3: 10, probability: 10.73},
-    {route1: 5, route2: 8, route3: 11, probability: 17.36},
-    {route1: 5, route2: 10, route3: 11, probability: 22.15},
-    {route1: 6, route2: 7, route3: 10, probability: 9.72},
-    {route1: 6, route2: 8, route3: 11, probability: 14.66},
-    {route1: 6, route2: 10, route3: 11, probability: 20.37},
-    {route1: 7, route2: 8, route3: 11, probability: 13.5},
-    {route1: 7, route2: 10, route3: 11, probability: 20.91},
-    {route1: 8, route2: 9, route3: 12, probability: 22.99},
-    {route1: 9, route2: 10, route3: 12, probability: 34.26},
-    {route1: 2, route2: 3, route3: 7, probability: 24.77},
-    {route1: 2, route2: 3, route3: 12, probability: 56.17},
-    {route1: 2, route2: 4, route3: 9, probability: 24.38},
-    {route1: 2, route2: 5, route3: 7, probability: 19.06},
-    {route1: 2, route2: 5, route3: 12, probability: 36.57},
-    {route1: 2, route2: 6, route3: 11, probability: 24.38},
-    {route1: 2, route2: 7, route3: 11, probability: 22.15},
-    {route1: 2, route2: 8, route3: 12, probability: 26.16},
-    {route1: 2, route2: 10, route3: 12, probability: 44.83},
-    {route1: 3, route2: 4, route3: 8, probability: 20.37},
-    {route1: 3, route2: 5, route3: 6, probability: 22.92},
-    {route1: 3, route2: 5, route3: 11, probability: 29.01},
-    {route1: 3, route2: 6, route3: 10, probability: 17.75},
-    {route1: 3, route2: 7, route3: 10, probability: 16.44},
-    {route1: 3, route2: 8, route3: 11, probability: 24.15},
-    {route1: 3, route2: 10, route3: 11, probability: 34.34},
-    {route1: 4, route2: 5, route3: 8, probability: 15.43},
-    {route1: 4, route2: 6, route3: 7, probability: 11.42},
-    {route1: 4, route2: 6, route3: 12, probability: 18.44},
-    {route1: 4, route2: 7, route3: 12, probability: 16.67},
-    {route1: 4, route2: 9, route3: 10, probability: 17.75},
-    {route1: 4, route2: 11, route3: 12, probability: 36.57},
-    {route1: 5, route2: 6, route3: 11, probability: 16.44},
-    {route1: 5, route2: 7, route3: 11, probability: 15.74},
-    {route1: 5, route2: 8, route3: 12, probability: 16.67},
-    {route1: 5, route2: 10, route3: 12, probability: 24.38},
-    {route1: 6, route2: 7, route3: 11, probability: 10.73},
-    {route1: 6, route2: 8, route3: 12, probability: 11.65},
-    {route1: 6, route2: 10, route3: 12, probability: 18.44},
-    {route1: 7, route2: 8, route3: 12, probability: 13.58},
-    {route1: 7, route2: 10, route3: 12, probability: 19.29},
-    {route1: 8, route2: 10, route3: 11, probability: 25.77},
-    {route1: 9, route2: 11, route3: 12, probability: 41.59},
-    {route1: 2, route2: 3, route3: 8, probability: 24.38},
-    {route1: 2, route2: 4, route3: 5, probability: 34.26},
-    {route1: 2, route2: 4, route3: 10, probability: 26.16},
-    {route1: 2, route2: 5, route3: 8, probability: 17.13},
-    {route1: 2, route2: 6, route3: 7, probability: 13.58},
-    {route1: 2, route2: 6, route3: 12, probability: 26.16},
-    {route1: 2, route2: 7, route3: 12, probability: 21.91},
-    {route1: 2, route2: 9, route3: 10, probability: 29.01},
-    {route1: 2, route2: 11, route3: 12, probability: 56.17},
-    {route1: 3, route2: 4, route3: 9, probability: 22.15},
-    {route1: 3, route2: 5, route3: 7, probability: 21.3},
-    {route1: 3, route2: 5, route3: 12, probability: 36.34},
-    {route1: 3, route2: 6, route3: 11, probability: 24.15},
-    {route1: 3, route2: 7, route3: 11, probability: 22.38},
-    {route1: 3, route2: 8, route3: 12, probability: 24.38},
-    {route1: 3, route2: 10, route3: 12, probability: 36.57},
-    {route1: 4, route2: 5, route3: 9, probability: 20.14},
-    {route1: 4, route2: 6, route3: 8, probability: 8.87},
-    {route1: 4, route2: 7, route3: 8, probability: 9.72},
-    {route1: 4, route2: 8, route3: 9, probability: 13.73},
-    {route1: 4, route2: 9, route3: 11, probability: 24.15},
-    {route1: 5, route2: 6, route3: 7, probability: 11.34},
-    {route1: 5, route2: 6, route3: 12, probability: 17.75},
-    {route1: 5, route2: 7, route3: 12, probability: 16.44},
-    {route1: 5, route2: 9, route3: 10, probability: 20.14},
-    {route1: 5, route2: 11, route3: 12, probability: 28.78},
-    {route1: 6, route2: 7, route3: 12, probability: 10.96},
-    {route1: 6, route2: 9, route3: 10, probability: 15.43},
-    {route1: 6, route2: 11, route3: 12, probability: 24.38},
-    {route1: 7, route2: 9, route3: 10, probability: 15.2},
-    {route1: 7, route2: 11, route3: 12, probability: 24.77},
-    {route1: 8, route2: 10, route3: 12, probability: 24.15},
-    {route1: 10, route2: 11, route3: 12, probability: 47.84}
-  ];
-
+  
   const [selectedRoutes, setSelectedRoutes] = useState([]);
   const [probability, setProbability] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0); // 0: route1, 1: route2, 2: route3
+  const [usedNumbers, setUsedNumbers] = useState(new Set());
+
+  const findProbability = (routes) => {
+    // 入力された3つの数字を昇順にソート
+    const sortedInput = [...routes].sort((a, b) => a - b);
+    
+    // データセットから一致するものを探す（順序は関係なく）
+    return probabilityData.find(item => {
+      const sortedData = [item.route1, item.route2, item.route3].sort((a, b) => a - b);
+      return sortedInput[0] === sortedData[0] && 
+             sortedInput[1] === sortedData[1] && 
+             sortedInput[2] === sortedData[2];
+    });
+  };
 
   const handleNumberClick = (number) => {
-    if (currentIndex < 3) {
+    if (selectedRoutes.length < 3 && !usedNumbers.has(number)) {
       const newRoutes = [...selectedRoutes, number];
       setSelectedRoutes(newRoutes);
-      setCurrentIndex(currentIndex + 1);
+      setUsedNumbers(new Set([...usedNumbers, number]));
 
       if (newRoutes.length === 3) {
-        const match = probabilityData.find(item => 
-          item.route1 === newRoutes[0] && 
-          item.route2 === newRoutes[1] && 
-          item.route3 === newRoutes[2]
-        );
+        const match = findProbability(newRoutes);
         setProbability(match ? match.probability : null);
       }
     }
@@ -193,7 +35,7 @@ const ProbabilityCalculator = () => {
 
   const resetSelection = () => {
     setSelectedRoutes([]);
-    setCurrentIndex(0);
+    setUsedNumbers(new Set());
     setProbability(null);
   };
 
@@ -229,10 +71,12 @@ const ProbabilityCalculator = () => {
             <button
               key={num}
               onClick={() => handleNumberClick(num)}
-              disabled={currentIndex >= 3}
+              disabled={usedNumbers.has(num) || selectedRoutes.length >= 3}
               className={`p-4 text-lg font-semibold rounded-lg
-                ${currentIndex >= 3 
-                  ? 'bg-gray-100 text-gray-400' 
+                ${usedNumbers.has(num)
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : selectedRoutes.length >= 3
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                   : 'bg-blue-100 hover:bg-blue-200 text-blue-800 active:bg-blue-300'}`}
             >
               {num}
