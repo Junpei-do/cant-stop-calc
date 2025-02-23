@@ -1,4 +1,4 @@
-export cconst probabilityData = [
+export const probabilityData = [
     {route1: 2, route2: 3, route3: 4, probability: 47.84},
     {route1: 2, route2: 3, route3: 9, probability: 28.78},
     {route1: 2, route2: 4, route3: 6, probability: 24.15},
