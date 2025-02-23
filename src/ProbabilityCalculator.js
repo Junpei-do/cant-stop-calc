@@ -1,69 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import Papa from 'papaparse';
+import React, { useState } from 'react';
 
 const ProbabilityCalculator = () => {
-  const [data, setData] = useState([]);
+  // 確率データを直接定義
+  const probabilityData = [
+    {route1: 2, route2: 3, route3: 4, probability: 47.84},
+    {route1: 2, route2: 3, route3: 5, probability: 41.59},
+    {route1: 2, route2: 3, route3: 6, probability: 31.64},
+    {route1: 2, route2: 3, route3: 7, probability: 24.77},
+    {route1: 2, route2: 3, route3: 8, probability: 24.38}
+  ];
+
   const [route1, setRoute1] = useState('');
   const [route2, setRoute2] = useState('');
   const [route3, setRoute3] = useState('');
   const [probability, setProbability] = useState(null);
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const response = await window.fs.readFile('test.csv', { encoding: 'utf8' });
-        const result = Papa.parse(response, {
-          header: true,
-          skipEmptyLines: true
-        });
-
-        const transformedData = [];
-        result.data.forEach(row => {
-          const keys = Object.keys(row);
-          for (let i = 0; i < keys.length; i += 2) {
-            if (keys[i]) {
-              const routes = keys[i].split('-');
-              const probability = keys[i + 1] ? row[keys[i + 1]].replace('%', '') : '';
-              
-              if (routes.length === 3 && probability) {
-                transformedData.push({
-                  route1: parseInt(routes[0]),
-                  route2: parseInt(routes[1]),
-                  route3: parseInt(routes[2]),
-                  probability: parseFloat(probability)
-                });
-              }
-            }
-          }
-        });
-        setData(transformedData);
-      } catch (error) {
-        console.error('Error loading data:', error);
-      }
-    };
-
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    if (route1 && route2 && route3) {
-      const match = data.find(item => 
-        item.route1 === parseInt(route1) &&
-        item.route2 === parseInt(route2) &&
-        item.route3 === parseInt(route3)
-      );
-      setProbability(match ? match.probability : null);
-    } else {
-      setProbability(null);
-    }
-  }, [route1, route2, route3, data]);
-
   const handleInputChange = (value, setter) => {
     const numValue = parseInt(value);
     if (!isNaN(numValue) && numValue >= 2 && numValue <= 12) {
       setter(value);
+      calculateProbability(numValue, setter === setRoute1 ? 'route1' : setter === setRoute2 ? 'route2' : 'route3');
     } else if (value === '') {
       setter('');
+      setProbability(null);
+    }
+  };
+
+  const calculateProbability = (newValue, route) => {
+    let r1 = route === 'route1' ? newValue : parseInt(route1);
+    let r2 = route === 'route2' ? newValue : parseInt(route2);
+    let r3 = route === 'route3' ? newValue : parseInt(route3);
+
+    if (r1 && r2 && r3) {
+      const match = probabilityData.find(item => 
+        item.route1 === r1 && 
+        item.route2 === r2 && 
+        item.route3 === r3
+      );
+      setProbability(match ? match.probability : null);
     }
   };
 
